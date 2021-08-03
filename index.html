@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="css/main.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="	https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+
+    <title>Raz's book shop</title>
+  </head>
+  <body onload="init()">
+    <!-- Language picker -->
+    <select class="selectpicker" onchange="onSetLang(this.value)" data-width="fit">
+      <option value="en">English</option>
+      <option value="he">Hebrew</option>
+    </select>
+
+    <!-- Main container -->
+    <div class="containers text-center text-warp">
+      <!-- Header -->
+      <div class="row mt-5">
+
+        <div class="col-sm-12 text-center">
+          <h2 data-trans="page-title">Welcome to Raz's book shop</h2>
+        </div>
+      </div>
+        
+      <!-- Table -->
+      <div class="row m-2">
+
+          <table class="table table-striped table-condensed table-hover">
+            <thead>
+              <tr>
+                <th scope="col" data-trans="id">id</th>
+                <th scope="col" data-trans="book-cover">book cover</th>
+                <th  scope="col" onclick="onFilterBy('title')" style="cursor: pointer" data-trans="title">title</th>
+                <th  scope="col" onclick="onFilterBy('price')" style="cursor: pointer" data-trans="price">price</th>
+                <th  scope="col" colspan="5" data-trans="actions">actions</th>
+              </tr>
+            </thead>
+            <tbody class="content">
+              <!-- Table content goes here -->
+            </tbody>
+          </table>
+        
+      </div>
+
+      <!-- Add book -->
+      <div class="row">
+        <div class="col-md-3 p-1">
+          <input class="rounded-pill text-center" type="text" name="title" data-trans="title" placeholder="book title">
+        </div>
+        <div class="col-md-3 p-1">
+          <input class="rounded-pill text-center" type="number" name="price" data-trans="price" placeholder="book price">
+        </div>
+        <div class="col-md-3 p-1">
+          <input class="rounded-pill text-center" type="text" name="img" data-trans="image" placeholder="img url">
+        </div>
+        <div class="col-md-3 p-1">
+          <button class="btn btn-success" onclick="onAddBook()" data-trans="add-book" class="btn">Add book</button>
+        </div>
+        
+      </div>
+      
+
+      <!-- Page nav -->
+      <div class="row">
+        <div class="col">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-center">
+            <li class="page-item"><a class="page-link" onclick="onNextPage('-')" data-trans="previous">Prev</a></li>
+            <li class="page-item"><a class="page-link page-idx"></a></li>
+            <li class="page-item"><a class="page-link" onclick="onNextPage('+')" data-trans="next">Next</a></li>
+          </div>
+          </ul>
+        </nav>
+
+    </div>
+
+    <div class="read">
+      <!-- Book Read goes here -->
+      <div class="modal fade" id="readModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title book-title" id="exampleModalLabel"></h5>
+              <h5 class="modal-title ms-2 book-price" id="exampleModalLabel"></h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body book-read">
+              <!-- Inject book modal here -->
+            </div>
+            <div class="modal-footer">
+              <div class="container d-flex justify-content-center mt-200">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="stars">
+                            <form action="" class="rating" data-id="">
+                              <input onclick="onSetRating(5)" class="star star-5" id="star-5" type="radio" name="star" value="5"/>
+                              <label class="star star-5" for="star-5"></label>
+                              <input onclick="onSetRating(4)" class="star star-4" id="star-4" type="radio" name="star" value="4"/>
+                              <label class="star star-4" for="star-4"></label>
+                              <input onclick="onSetRating(3)" class="star star-3" id="star-3" type="radio" name="star" value="3"/>
+                              <label class="star star-3" for="star-3"></label>
+                              <input onclick="onSetRating(2)" class="star star-2" id="star-2" type="radio" name="star" value="2"/>
+                              <label class="star star-2" for="star-2"></label>
+                              <input onclick="onSetRating(1)" class="star star-1" id="star-1" type="radio" name="star" value="1"/>
+                              <label class="star star-1" for="star-1"></label>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+              
+            </div>
+              
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+
+    <div class="update">
+      <!-- Book update goes here -->
+      <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel" data-trans="update-book-details">Update book details</h5>
+              <h5 class="modal-title ms-2 book-price" id="exampleModalLabel"></h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body book-update">
+              <!-- Inject book update modal here -->
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary update-quit" data-bs-dismiss="modal" data-trans="cancel">Cancel</button>
+              <button onclick="onUpdateBook(this.dataset.updateid)" type="button" class="btn btn-primary on-update-btn" data-updateid="" data-trans="save-changes">Save changes</button>
+            </div>
+              
+            </div>
+              
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    
+    <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"
+    ></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="	https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="	https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+    <script src="js/storage-service.js"></script>
+    <script src="js/i18n-service.js"></script>
+    <script src="js/util-service.js"></script>
+    <script src="js/book-service.js"></script>
+    <script src="js/book-controler.js"></script>
+  </body>
+</html>
